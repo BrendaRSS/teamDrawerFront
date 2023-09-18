@@ -2,14 +2,61 @@ import styled from "styled-components";
 import { device } from "../constants/DeviceSize";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 export default function HomePage() {
-    const [input, setInput] = useState("");
+    const [namePlayer, setNamePlayer] = useState("");
+    const [teams, setTeams ] = useState();
+    const [printDatas, setPrintDatas] = useState(false);
 
-    function enviarJogadores(event){
+    function createPlayer(event){
         event.preventDefault();
-        const body = { nome: input }
-        
+        const body = { nome: namePlayer }
+        axios.post("http://localhost:8080/jogador", body)
+            .then((resposta) => {
+                console.log(resposta.data);
+                setNamePlayer("");
+            })
+            .catch((error) => {
+                console.log(error.response.data);
+                const status = error.response.status;
+                if (status === 422) {
+                    alert("Todos os campos precisam ser preenchidos adequadamente!");
+                }
+                if (status === 401) {
+                    alert("Token não enviado ou usuário não encontrado!");
+                }
+                if (status === 404) {
+                    alert("Página não encontrada.");
+                }
+                if (status === 500) {
+                    alert("Erro no servidor");
+                }
+            });
+    }
+
+    function getTeams(){
+        axios.get("http://localhost:8080/times")
+        .then((resposta) => {
+            setTeams(resposta.data);
+            setPrintDatas(true);
+        })
+        .catch((error) => {
+            console.log(error.response.data);
+            const status = error.response.status;
+            if (status === 422) {
+                alert("Todos os campos precisam ser preenchidos adequadamente!");
+            }
+            if (status === 401) {
+                alert("Token não enviado ou usuário não encontrado!");
+            }
+            if (status === 404) {
+                alert("Página não encontrada.");
+            }
+            if (status === 500) {
+                alert("Erro no servidor");
+            }
+        });
     }
 
     return (
@@ -18,11 +65,11 @@ export default function HomePage() {
                 <span>Seja Bem Vindo!</span>
             </Welcome>
             <Content>
-                <form onSubmit={enviarJogadores}>
+                <form onSubmit={createPlayer}>
                     <ContainerInput>
                         <input
-                            onChange={e => setInput(e.target.value)}
-                            value={input}
+                            onChange={e => setNamePlayer(e.target.value)}
+                            value={namePlayer}
                             type="player"
                             placeholder="Digite o nome e sobrenome do jogador"
                             required
@@ -30,6 +77,26 @@ export default function HomePage() {
                         <button type="submit">Enviar</button>
                     </ContainerInput>
                 </form>
+                <TeamsBuild>
+                    {printDatas === true? 
+                        <ul>
+                            {Object.keys(teams).map((time, index) => (
+                                <li key={index}>
+                                    <strong>{time}:</strong>
+                                    <ul>
+                                        {teams[time].map((jogador, jogadorIndex) => (
+                                            <li key={jogadorIndex}>{jogador}</li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul> 
+                        :
+                        ""}
+                    <ButtonTeams
+                        onClick={getTeams}>Formar Times
+                    </ButtonTeams>
+                </TeamsBuild>
             </Content>
         </ContainerHome>
     );
@@ -71,7 +138,7 @@ const Content = styled.div`
     height: 400px;
     background: linear-gradient(0deg, rgb(81 88 83 / 88%) 0%, rgb(0 0 0 / 74%) 100%);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: flex-start;
     border-radius: 40px;
     padding: 15px;
@@ -129,3 +196,37 @@ const ContainerInput = styled.div`
     }
 }
 `    
+const TeamsBuild = styled.div`
+    width: 400px;
+    height: auto;
+    background-color: purple;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+const ButtonTeams = styled.button`
+    width: 150px;
+    height: 35px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 23px;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    margin-top: 20px;
+    color: red;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0 1.6rem;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+            &&:hover {
+        box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+        transition-duration: .5s;
+    }
+`
