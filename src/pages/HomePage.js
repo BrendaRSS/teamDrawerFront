@@ -26,7 +26,7 @@ const ContainerHome = styled.div`
     background-color: #15b287;
     display: flex;
     justify-content: center;
-    align-items: top;
+    align-items: flex-start;
     @media ${device.mobileM}{
         
     }
@@ -61,7 +61,6 @@ const Title = styled.div`
             color: #FFFFFF;
     }
 `
-
 const Image = styled.div`
     display: flex;
     justify-content: center;
