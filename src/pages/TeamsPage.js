@@ -13,9 +13,10 @@ export default function HomePage() {
         event.preventDefault();
         const body = { nome: namePlayer }
         axios.post("http://localhost:8080/jogador", body)
-            .then((resposta) => {
-                console.log(resposta.data);
+            .then((response) => {
+                console.log(response.data);
                 setNamePlayer("");
+                getTeams();
             })
             .catch((error) => {
                 console.log(error.response.data);
@@ -37,8 +38,8 @@ export default function HomePage() {
 
     function getTeams(){
         axios.get("http://localhost:8080/times")
-        .then((resposta) => {
-            setTeams(resposta.data);
+        .then((response) => {
+            setTeams(response.data);
             setPrintDatas(true);
         })
         .catch((error) => {
@@ -57,6 +58,28 @@ export default function HomePage() {
                 alert("Erro no servidor");
             }
         });
+    }
+    function deleteTeams(){
+        axios.delete("http://localhost:8080/jogador/all")
+        .then((response) => {
+            setPrintDatas(false);
+        })
+        .catch((error)=>{
+            console.log(error.response.data);
+            const status = error.response.status;
+            if (status === 422) {
+                alert("Todos os campos precisam ser preenchidos adequadamente!");
+            }
+            if (status === 401) {
+                alert("Token não enviado ou usuário não encontrado!");
+            }
+            if (status === 404) {
+                alert("Página não encontrada.");
+            }
+            if (status === 500) {
+                alert("Erro no servidor");
+            }
+        })
     }
 
     return (
@@ -94,7 +117,12 @@ export default function HomePage() {
                         :
                         ""}
                     <ButtonTeams
-                        onClick={getTeams}>Formar Times
+                        onClick={getTeams}>
+                            Formar Times
+                    </ButtonTeams>
+                    <ButtonTeams
+                        onClick={getTeams}>
+                        Deletar Times
                     </ButtonTeams>
                 </TeamsBuild>
             </Content>
