@@ -9,7 +9,7 @@ export default function HomePage(){
         <ContainerHome>
             <Content>
                 <Title>
-                    <span>Sorteie seus times!</span>
+                    <span>Forme seus times!</span>
                     <GiSoccerBall />
                 </Title>
                 <TeamsComponent/>

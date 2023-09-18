@@ -86,14 +86,14 @@ export default function TeamsComponent(){
         <Content>
             <form onSubmit={createPlayer}>
                 <ContainerInput>
-                    <input
+                    <InputNamePlayer
                         onChange={e => setNamePlayer(e.target.value)}
                         value={namePlayer}
                         type="player"
-                        placeholder="Digite o nome e sobrenome do jogador"
+                        placeholder="Nome e sobrenome do jogador"
                         required
                     />
-                    <button type="submit">Enviar</button>
+                    <ButtonSendPlayer type="submit">Enviar</ButtonSendPlayer>
                 </ContainerInput>
             </form>
             <TeamsBuild>
@@ -159,7 +159,8 @@ const ContainerInput = styled.div`
     align-items: flex-start;
     margin-bottom: 20px;
     margin-top: 10px;
-    input{
+`
+const InputNamePlayer = styled.input`
     width: 300px;
     height: 40px;
     left: 25px;
@@ -171,16 +172,16 @@ const ContainerInput = styled.div`
     padding: 5px 15px;
     margin-right: 15px;
     margin-left: 15px;
-        ::placeholder{
+        &&::placeholder{
         font-family: 'Raleway', sans-serif;
         font-style: normal;
         font-weight: 400;
-        font-size: 20px;
+        font-size: 16px;
         line-height: 23px;
         color: #000000;
     }
-}
- button{
+` 
+const ButtonSendPlayer = styled.button`
     width: 100px;
     height: 35px;
     background-color: #d1a4f0;
@@ -193,18 +194,36 @@ const ContainerInput = styled.div`
     border-style: none;
     box-sizing: border-box;
     color: #FFFFFF;
+    text-align: center;
+    appearance: none;
+    backface-visibility: hidden;
+    box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
     cursor: pointer;
+    display: inline-block;
+    letter-spacing: normal;
+    outline: none;
+    overflow: hidden;
     flex-shrink: 0;
     padding: 0 1.6rem;
-    text-align: center;
+    text-decoration: none;
+    transform: translate3d(0, 0, 0);
+    transition: all .3s;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-            &&:hover {
-        box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
-        transition-duration: .5s;
+    vertical-align: top;
+    white-space: nowrap;
+    &&:hover {
+        background-color: #9d5fc7;
+        opacity: 1;
+        transform: translateY(0);
+        transition-duration: .35s;
+      }
+
+    &&:active {
+    transform: translateY(2px);
+    transition-duration: .35s;
     }
-}
 `
 const TeamsBuild = styled.div`
     width: 100%;
@@ -225,11 +244,11 @@ const ContainerButton = styled.div`
 const ButtonTeams = styled.button`
     width: 150px;
     height: 35px;
-    background-color: ${(props) => props.color};;
+    background-color: ${(props) => props.color};
     font-family: 'Raleway';
     font-style: normal;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 23px;
     border-radius: 8px;
     border-style: none;
@@ -244,9 +263,13 @@ const ButtonTeams = styled.button`
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-            &&:hover {
+        &&:hover {
         box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
-        transition-duration: .5s;
+        background-color: #FFFFFF;
+        border: 1px solid ${(props) => props.color};
+        color: #000000;
+        font-size: 14px;
+        transition-duration: 1s;
     }
 `
 const TeamsBuildingInside = styled.div`
@@ -264,11 +287,11 @@ const Ateam = styled.div`
     background-color: #FFFFFF;
     justify-content:flex-start ;
     align-items: center;
-    border: 1px dashed #15b287;
+    border: 1px solid #15b287;
     border-radius: 2px;
     box-sizing: border-box;
     box-shadow: 13px 15px 13px -5px rgba(0,0,0,0.2);
-    padding: 2px;
+    padding: 8px;
     margin-bottom: 5px;
     strong{
         color: #000000;
