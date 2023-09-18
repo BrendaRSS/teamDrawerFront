@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { device } from "../constants/DeviceSize";
 import { GiSoccerBall } from "react-icons/gi";
 import jogadores from "../assets/images/player.jpeg"
+import TeamsComponent from "../components/TeamsComponent";
 
 export default function HomePage(){
     return(
@@ -11,7 +12,8 @@ export default function HomePage(){
                     <span>Sorteie seus times!</span>
                     <GiSoccerBall />
                 </Title>
-                <ButtonPageSorteio>Iniciar</ButtonPageSorteio>
+                <TeamsComponent/>
+                {/* <ButtonPageSorteio>Iniciar</ButtonPageSorteio> */}
             </Content>
             <Image>
                 <ImagePlayer src={jogadores} alt="jogadores" />
@@ -32,8 +34,8 @@ const ContainerHome = styled.div`
     }
 `
 const Content = styled.div`
-    width: 50%;
-    padding-top: 50px;
+    width: 75%;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -43,33 +45,32 @@ const Title = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 150px;
+    margin-bottom: 25px;
  span{
         font-family: 'Fredericka the Great', cursive;
         font-style: normal;
         font-weight: 400;
-        font-size: 60px;
+        font-size: 70px;
         line-height: 17px;
         text-align: center;
-        text-decoration-line: underline;
         color: #FFFFFF;
         display: block;
         padding-right: 10px;
     }
     svg{
-            font-size:65px;
+            font-size:70px;
             color: #FFFFFF;
     }
 `
 const Image = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
-    width: 50%;
+    width: 20%;
     height: 100%;
 `
 const ImagePlayer = styled.img`
-    width: 500px;
+    width: 300px;
     border-radius: 50%;
 `
 const ButtonPageSorteio = styled.button`
