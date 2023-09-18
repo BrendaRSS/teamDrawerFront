@@ -13,11 +13,11 @@ export default function TeamsComponent(){
     function createPlayer(event) {
         event.preventDefault();
         const body = { nome: namePlayer }
-        axios.post("https://teamdrawerapi-production.up.railway.app/jogador", body)
+        axios.post("http://localhost:8080/jogador", body)
             .then((response) => {
                 console.log(response.data);
                 setNamePlayer("");
-                getTeams();
+                // getTeams();
             })
             .catch((error) => {
                 console.log(error.response.data);
@@ -38,7 +38,7 @@ export default function TeamsComponent(){
     }
 
     function getTeams() {
-        axios.get("https://teamdrawerapi-production.up.railway.app/times")
+        axios.get("http://localhost:8080/times")
             .then((response) => {
                 setTeams(response.data);
                 setPrintDatas(true);
@@ -61,7 +61,7 @@ export default function TeamsComponent(){
             });
     }
     function deleteTeams() {
-        axios.delete("teamdrawerapi-production.up.railway.app/jogador/all")
+        axios.delete("http://localhost:8080/jogador/all")
             .then((response) => {
                 setPrintDatas(false);
             })
@@ -97,29 +97,27 @@ export default function TeamsComponent(){
                 </ContainerInput>
             </form>
             <TeamsBuild>
-                {printDatas === true ?
-                    <ul>
-                        {Object.keys(teams).map((time, index) => (
-                            <li key={index}>
-                                <strong>{time}:</strong>
-                                <ul>
-                                    {teams[time].map((jogador, jogadorIndex) => (
-                                        <li key={jogadorIndex}>{jogador}</li>
-                                    ))}
-                                </ul>
-                            </li>
-                        ))}
-                    </ul>
-                    :
-                    < ProgressBar
-                        height="80"
-                        width="80"
-                        ariaLabel="progress-bar-loading"
-                        wrapperStyle={{}}
-                        wrapperClass="progress-bar-wrapper"
-                        borderColor='#F4442E'
-                        barColor='#51E5FF'
-                    />}
+                    {printDatas === true ?
+                        <TeamsBuildingInside>
+                            {Object.keys(teams).map((time, index) => (
+                                 <Ateam key={index}>
+                                    <strong>{time}:&nbsp;</strong>
+                                        {teams[time].map((jogador, jogadorIndex) => (
+                                            <span key={jogadorIndex}>{jogador},&nbsp; </span>
+                                        ))}
+                                </Ateam>
+                            ))}
+                        </TeamsBuildingInside>
+                        :
+                        < ProgressBar
+                            height="80"
+                            width="80"
+                            ariaLabel="progress-bar-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="progress-bar-wrapper"
+                            borderColor='#F4442E'
+                            barColor='#51E5FF'
+                        />}
                 <ContainerButton>
                     <ButtonTeams
                         color="#31b44c"
@@ -243,5 +241,39 @@ const ButtonTeams = styled.button`
             &&:hover {
         box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
         transition-duration: .5s;
+    }
+`
+const TeamsBuildingInside = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    box-sizing: border-box;
+    padding: 5px;
+`
+const Ateam = styled.div`
+    width: 90%;
+    display: flex;
+    background-color: #FFFFFF;
+    justify-content:flex-start ;
+    align-items: center;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    box-sizing: border-box;
+    box-shadow: 13px 15px 13px -5px rgba(0,0,0,0.2);
+    padding: 2px;
+    margin-bottom: 5px;
+    strong{
+        color: #000000;
+        text-align: center;
+        font-size: 20;
+        font-family: 'Roboto', sans-serif;
+    }
+    span{
+        color: #000000;
+        text-align: center;
+        font-size: 18;
+        font-family: 'Josefin Slab', serif;
     }
 `
