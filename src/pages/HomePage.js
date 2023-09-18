@@ -13,7 +13,6 @@ export default function HomePage(){
                     <GiSoccerBall />
                 </Title>
                 <TeamsComponent/>
-                {/* <ButtonPageSorteio>Iniciar</ButtonPageSorteio> */}
             </Content>
             <Image>
                 <ImagePlayer src={jogadores} alt="jogadores" />

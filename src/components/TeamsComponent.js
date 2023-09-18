@@ -3,7 +3,7 @@ import { device } from "../constants/DeviceSize";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import { ProgressBar } from "react-loader-spinner";
+import { BallTriangle } from "react-loader-spinner";
 
 export default function TeamsComponent(){
     const [namePlayer, setNamePlayer] = useState("");
@@ -13,7 +13,7 @@ export default function TeamsComponent(){
     function createPlayer(event) {
         event.preventDefault();
         const body = { nome: namePlayer }
-        axios.post("http://localhost:8080/jogador", body)
+        axios.post("https://teamdrawerapi-production.up.railway.app/jogador", body)
             .then((response) => {
                 console.log(response.data);
                 setNamePlayer("");
@@ -38,7 +38,7 @@ export default function TeamsComponent(){
     }
 
     function getTeams() {
-        axios.get("http://localhost:8080/times")
+        axios.get("https://teamdrawerapi-production.up.railway.app/times")
             .then((response) => {
                 setTeams(response.data);
                 setPrintDatas(true);
@@ -61,7 +61,7 @@ export default function TeamsComponent(){
             });
     }
     function deleteTeams() {
-        axios.delete("http://localhost:8080/jogador/all")
+        axios.delete("https://teamdrawerapi-production.up.railway.app/jogador/all")
             .then((response) => {
                 setPrintDatas(false);
             })
@@ -109,15 +109,18 @@ export default function TeamsComponent(){
                             ))}
                         </TeamsBuildingInside>
                         :
-                        < ProgressBar
-                            height="80"
-                            width="80"
-                            ariaLabel="progress-bar-loading"
-                            wrapperStyle={{}}
-                            wrapperClass="progress-bar-wrapper"
-                            borderColor='#F4442E'
-                            barColor='#51E5FF'
-                        />}
+                        <Spiner>
+                    <BallTriangle
+                        height={100}
+                        width={100}
+                        radius={5}
+                        color="#15b287"
+                        ariaLabel="ball-triangle-loading"
+                        wrapperClass={{}}
+                        wrapperStyle=""
+                        visible={true}
+                    />
+                    </Spiner>}
                 <ContainerButton>
                     <ButtonTeams
                         color="#31b44c"
@@ -137,13 +140,15 @@ export default function TeamsComponent(){
 
 const Content = styled.div`
     width: 85%;
-    height: 400px;
+    height: 450px;
     background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     border-radius: 40px;
+    box-shadow: 0px -1px 39px -4px rgba(0,0,0,0.62);
+    box-sizing: border-box;
     padding: 15px;
 `
 const ContainerInput = styled.div`
@@ -165,6 +170,7 @@ const ContainerInput = styled.div`
     box-sizing: border-box;
     padding: 5px 15px;
     margin-right: 15px;
+    margin-left: 15px;
         ::placeholder{
         font-family: 'Raleway', sans-serif;
         font-style: normal;
@@ -258,7 +264,7 @@ const Ateam = styled.div`
     background-color: #FFFFFF;
     justify-content:flex-start ;
     align-items: center;
-    border: 1px solid #000000;
+    border: 1px dashed #15b287;
     border-radius: 2px;
     box-sizing: border-box;
     box-shadow: 13px 15px 13px -5px rgba(0,0,0,0.2);
@@ -276,4 +282,12 @@ const Ateam = styled.div`
         font-size: 18;
         font-family: 'Josefin Slab', serif;
     }
+`
+const Spiner = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    box-sizing: border-box;
+    padding: 20px;
 `
